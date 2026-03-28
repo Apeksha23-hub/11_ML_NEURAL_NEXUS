@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chatbot_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Student Performance Dashboard</h1>
+            <p>Predict student academic risk using AI based on academic indicators.</p>
+        </header>
+
+        <main class="dashboard">
+            <div class="card form-card">
+                <h2>Student Data Input</h2>
+                <form id="prediction-form">
+                    <div class="form-grid">
+                        <div class="input-group full-width">
+                            <label for="StudentName">Student Full Name</label>
+                            <input type="text" id="StudentName" name="StudentName" placeholder="e.g. John Doe" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="StudyHours">Study Hours (0-24)</label>
+                            <input type="number" id="StudyHours" name="StudyHours" step="0.1" min="0" max="24" required placeholder="e.g. 4.5">
+                        </div>
+                        <div class="input-group">
+                            <label for="Attendance">Attendance (%)</label>
+                            <input type="number" id="Attendance" name="Attendance" min="0" max="100" required placeholder="e.g. 85">
+                        </div>
+                        <div class="input-group">
+                            <label for="AssignmentCompletion">Assignments (%)</label>
+                            <input type="number" id="AssignmentCompletion" name="AssignmentCompletion" min="0" max="100" required placeholder="e.g. 90">
+                        </div>
+                        <div class="input-group">
+                            <label for="ExamScore">Exam Score (0-100)</label>
+                            <input type="number" id="ExamScore" name="ExamScore" min="0" max="100" required placeholder="e.g. 75">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="Motivation">Motivation Level</label>
+                            <select id="Motivation" name="Motivation" required>
+                                <option value="0">Low</option>
+                                <option value="1" selected>Medium</option>
+                                <option value="2">High</option>
+                                <option value="3">Very High</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="StressLevel">Stress Level</label>
+                            <select id="StressLevel" name="StressLevel" required>
+                                <option value="0">Low</option>
+                                <option value="1" selected>Medium</option>
+                                <option value="2">High</option>
+                                <option value="3">Very High</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="OnlineCourses">Online Courses</label>
+                            <input type="number" id="OnlineCourses" name="OnlineCourses" min="0" max="20" required placeholder="e.g. 2">
+                        </div>
+                        <div class="input-group">
+                            <label for="Discussions">Discussions Participated</label>
+                            <input type="number" id="Discussions" name="Discussions" min="0" required placeholder="e.g. 5">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="Extracurricular">Extracurricular</label>
+                            <select id="Extracurricular" name="Extracurricular" required>
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Internet">Internet Access</label>
+                            <select id="Internet" name="Internet" required>
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="Resources">Learning Resources</label>
+                            <select id="Resources" name="Resources" required>
+                                <option value="0">No</option>
+                                <option value="1" selected>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span>Predict Performance</span>
+                        <div class="loader" id="loader"></div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="card result-card" id="result-container" style="display: none;">
+                <h2>Analysis & Visualization</h2>
+                <div class="visualization-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+
+                <div class="result-box" id="result-box">
+                    <div class="risk-badge" id="risk-badge">Not At Risk</div>
+                    <div class="prob-section">
+                        <span>Risk Probability:</span>
+                        <h3 id="risk-prob">12%</h3>
+                    </div>
+                </div>
+                
+                <div class="recommendations" id="recommendations-container">
+                    <h3>Actionable Recommendations</h3>
+                    <ul id="recommendation-list">
+                    </ul>
+                </div>
+                
+                <div class="llm-insights" id="llm-insights-container" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(214, 185, 252, 0.05); border-left: 4px solid var(--accent-light); border-radius: 12px; backdrop-filter: blur(5px);">
+                    <h3>AI Advisor Insights</h3>
+                    <p id="llm-insights-text"></p>
+                </div>
+            </div>
+
+            <div class="card history-card">
+                <h2>Monitoring Log (Recent Activity)</h2>
+                <div class="history-table-wrapper">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Student Name</th>
+                                <th>GPA Impact</th>
+                                <th>Status</th>
+                                <th>Risk %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- Populated by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Chatbot UI -->
+    <div class="chatbot-container" id="chatbot-container">
+        <div class="chatbot-header" id="chatbot-header">
+            <h3>Academic Advisor AI</h3>
+            <button id="chatbot-toggle-btn" class="chatbot-toggle-btn">-</button>
+        </div>
+        <div class="chatbot-body" id="chatbot-body">
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">Hello! I am your AI Academic Advisor. Ask me anything about your performance or how to improve!</div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+                <button id="chat-send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle Button (When closed) -->
+    <button class="chat-fab" id="chat-fab">💬 Chat with AI</button>
+
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

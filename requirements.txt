@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+joblib
+openpyxl
+imbalanced-learn
+google-generativeai
+python-dotenv
+sqlalchemy

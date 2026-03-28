@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Databases
+*.db
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+.project
+.pydevproject
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hackathon specific
+node_modules/
+dist/
+build/
+*.log
